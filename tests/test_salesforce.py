@@ -1,5 +1,5 @@
-from SalesforcePg import SalesforcePg
-from WebDriver import WebDriver
+from pages.salesforce_pg import SalesforcePg
+from utils.WebDriver import WebDriver
 
 """ This is the Test Class - Salesforce App """
 class SalesforceTests:
@@ -16,8 +16,8 @@ class SalesforceTests:
         self.page = SalesforcePg(self.driver)
 
         # Step 3: Initialize Test Data
-        username = ""
-        password = ""
+        username = "autotesterbot01-tj89@force.com"
+        password = "Qwerty@12345"
         salutation = "Mr"
         firstname = "Bot"
         lastname = "Test"

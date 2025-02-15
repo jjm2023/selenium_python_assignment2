@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 
-class WebDriver:
+class webdriver:
     def __init__(self):
         self.driver = None
 

@@ -4,16 +4,20 @@ from selenium.common import TimeoutException, WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from BasePg import BasePg
-from SalesforceLocators import SalesforceLocators
+from pages.SalesforceLocators import SalesforceLocators
 from selenium.webdriver.common.action_chains import ActionChains
 
 from selenium.webdriver.common.keys import Keys
 import time
+from utils.logger import setup_logger
+
+# Set up logger
+logger = setup_logger()
 
 """ This is the Page Class - Salesforce App """
 
-
 class SalesforcePg(BasePg):
+
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -34,8 +38,8 @@ class SalesforcePg(BasePg):
         Navigates the WebDriver to Salesforce Login Page
         Prints the page title to the console after navigation.
         """
-        self.driver.get("https://ability-energy-5933.my.salesforce.com/")
-        # print("Navigation Success: " + self.driver.title)
+        self.driver.get("https://ruby-saas-4534.lightning.force.com/lightning/page/home")
+        logger.info("Navigation Success: " + self.driver.title)
 
     def login_to_salesforce(self, username, password):
         """
