@@ -1,0 +1,8 @@
+# requirements.txt
+selenium==4.27.1 # for selenium
+webdriver-manager==4.0.2 # for webdriver
+pytest==7.2.2 # for testing utils
+pytest-bdd==5.0.0 # for BDD testing with pytest
+allure-pytest==2.10.0 # for interactive reporting with allure reports
+pyyaml==6.0.2 # For reading YAML configuration files
+allure-python-commons~=2.10.0
