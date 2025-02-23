@@ -1,26 +1,41 @@
 # utils/selenium_utils.py
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from random import randint
 
 
 class SeleniumUtils:
     @staticmethod
+    def wait_for_element(driver, locator, condition=EC.visibility_of_element_located, timeout=10):
+        """
+        Wait for an element to meet a certain condition (default: visibility).
+
+        :param driver: WebDriver instance
+        :param locator: Locator tuple (By, value)
+        :param condition: The condition to wait for (default is visibility)
+        :param timeout: The maximum time to wait for the condition (default is 10 seconds)
+        :return: WebElement once the condition is met
+        """
+        return WebDriverWait(driver, timeout).until(condition(locator))
+
+    @staticmethod
     def click(driver, locator):
         """
-        Click on the element located by the given locator.
+        Click on the element located by the given locator after waiting for the element to be clickable.
         """
-        element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
+        # Wait for element to be clickable
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.element_to_be_clickable)
         element.click()
 
     @staticmethod
     def enter_text(driver, locator, text):
         """
-        Enter text into the field located by the given locator.
+        Enter text into the field located by the given locator after waiting for the element to be visible.
         """
-        element = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(locator))
+        # Wait for the element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
         element.send_keys(text)
 
     @staticmethod
@@ -31,34 +46,42 @@ class SeleniumUtils:
         driver.get(url)
 
     @staticmethod
-    def action_click(driver, element):
+    def action_click(driver, locator):
         """
-        Click on the element using ActionChains (useful for complex elements).
+        Click on the element using ActionChains after waiting for it to be clickable.
         """
+        # Wait for element to be clickable
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.element_to_be_clickable)
         action = ActionChains(driver)
         action.click(element).perform()
 
     @staticmethod
-    def action_enter_text(driver, element, text):
+    def action_enter_text(driver, locator, text):
         """
-        Enter text into the element using ActionChains (useful for complex inputs).
+        Enter text into the element using ActionChains after waiting for it to be visible.
         """
+        # Wait for element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
         action = ActionChains(driver)
         action.click(element).send_keys(text).perform()
 
     @staticmethod
-    def action_double_click(driver, element):
+    def action_double_click(driver, locator):
         """
-        Double-click an element using ActionChains.
+        Double-click on the element using ActionChains after waiting for it to be clickable.
         """
+        # Wait for element to be clickable
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.element_to_be_clickable)
         action = ActionChains(driver)
         action.double_click(element).perform()
 
     @staticmethod
-    def action_hover(driver, element):
+    def action_hover(driver, locator):
         """
-        Hover over an element using ActionChains.
+        Hover over the element using ActionChains after waiting for it to be visible.
         """
+        # Wait for element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
         action = ActionChains(driver)
         action.move_to_element(element).perform()
 
@@ -88,3 +111,52 @@ class SeleniumUtils:
         :param timeout: The maximum time to wait for the condition (default is 30 seconds)
         """
         WebDriverWait(driver, timeout).until(condition)
+
+    @staticmethod
+    def generate_random_integer(start, end):
+        """
+        Generates a random integer between start and end (inclusive).
+
+        :param start: The starting value of the range.
+        :param end: The ending value of the range.
+        :return: A random integer between start and end.
+        """
+        return randint(start, end)
+
+    @staticmethod
+    def send_enter(driver, locator):
+        """
+        Send the Enter key to an element after waiting for it to be visible.
+        """
+        # Wait for element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
+        action = ActionChains(driver)
+        action.click(element).send_keys(Keys.ENTER).perform()
+
+    @staticmethod
+    def get_attribute(driver, locator, attribute):
+        """
+        Get the value of a specified attribute for a given element after waiting for the element to be visible.
+
+        :param driver: WebDriver instance
+        :param locator: Locator tuple (By, value)
+        :param attribute: The attribute name to retrieve (e.g., 'value', 'class', 'id', etc.)
+        :return: The attribute value as a string.
+        """
+        # Wait for element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
+        # Get the attribute value
+        return element.get_attribute(attribute)
+
+    @staticmethod
+    def clear_text(driver, locator):
+        """
+        Clears the text from the input field located by the given locator.
+
+        :param driver: WebDriver instance
+        :param locator: Locator tuple (By, value)
+        """
+        # Wait for the element to be visible
+        element = SeleniumUtils.wait_for_element(driver, locator, EC.visibility_of_element_located)
+        # Clear the text from the element
+        element.clear()
