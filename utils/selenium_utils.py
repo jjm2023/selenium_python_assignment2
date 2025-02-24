@@ -8,7 +8,7 @@ from random import randint
 
 class SeleniumUtils:
     @staticmethod
-    def wait_for_element(driver, locator, condition=EC.visibility_of_element_located, timeout=10):
+    def wait_for_element(driver, locator, condition=EC.visibility_of_element_located, timeout=60):
         """
         Wait for an element to meet a certain condition (default: visibility).
 
